@@ -20,7 +20,7 @@ type: "php:8.2"
 relationships:
   postgresql: "postgresql:postgresql"
   redis: "redis:redis"
-  
+
 
 # The size of the persistent disk of the application (in MB). Minimum value is 128.
 # disk: 512
@@ -55,8 +55,8 @@ web:
     "/":
       passthru: "/index.php"
       root: ""
-      
-    
+
+
 
 # Alternate copies of the application to run as background processes.
 # More information: https://docs.platform.sh/create-apps/app-reference.html#workers
@@ -88,10 +88,9 @@ build:
 # are available in the PATH during the build process and in the runtime environment. They’re installed before
 # the build hook runs using a package manager for the language.
 # More information: https://docs.platform.sh/create-apps/app-reference.html#dependencies
-# dependencies:
-#   php: # Specify one Composer package per line.
-#     drush/drush: '8.0.0'
-#     composer/composer: '^2'
+dependencies:
+  python3:
+    pipenv: '2022.9.4'
 
 # Hooks allow you to customize your code/environment as the project moves through the build and deploy stages
 # More information: https://docs.platform.sh/create-apps/app-reference.html#hooks
@@ -103,7 +102,7 @@ hooks:
     
     # Add build steps here.
     # echo 'I am a build step'
-    
+
   # The deploy hook is run after the app container has been started, but before it has started accepting requests.
   # More information: https://docs.platform.sh/create-apps/hooks/hooks-comparison.html#deploy-hook
   deploy: |
