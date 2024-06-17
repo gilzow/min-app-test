@@ -36,6 +36,19 @@ describe("Home",()=>{
       cy.get("@searchresultsheader").should("exist")
       cy.get("@searchresultsheader").contains("Documentation")
       cy.get("#xssroot").find("li").contains("OpenSearch").should("exist")
+
+      cy.get("#searchwicon-header").type("{enter}")
+      cy.location("pathname").should(
+          "eq",
+          "/search.html"
+      )
+
+      cy.get("#xssSearchPage").find("h2").as("searchpageresults")
+      cy.get("@searchpageresults").should("exist")
+      cy.get("@searchpageresults").contains("Documentation")
+
+      cy.get("#xssSearchPage").find("li").contains("OpenSearch").should("exist")
+
     })
   })
 })
