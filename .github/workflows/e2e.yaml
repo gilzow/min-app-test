@@ -14,8 +14,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cypress-io/github-action@v6
-#        with:
-#         project: ./sites/platform
+        with:
+         wait-on: ${{ inputs.url }}
+         record: true
         env:
           CYPRESS_baseUrl: ${{ inputs.url }}
           CYPRESS_environment: github
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
