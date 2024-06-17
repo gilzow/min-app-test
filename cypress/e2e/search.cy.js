@@ -32,9 +32,9 @@ describe("Home",()=>{
       }
 
       cy.get("#xssroot").find("h2").as("searchresultsheader")
-      cy.get("@searchresultsheader")
-        .should("exist")
-        .contains("Documentation")
+      cy.get("#xssroot").find("h2").as("searchresultsheader")
+      cy.get("@searchresultsheader").should("exist")
+      cy.get("@searchresultsheader").contains("Documentation")
       cy.get("#xssroot").find("li").contains("OpenSearch").should("exist")
     })
   })
