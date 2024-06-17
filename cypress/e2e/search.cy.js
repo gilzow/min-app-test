@@ -11,11 +11,7 @@ describe("Home",()=>{
   })
 
   context("Search tests",()=>{
-    it("Search feature works", () => {
-      ///cy.wait("@noSearchResults")
-      //cy.intercept("/\/indexes\/platform_docs\/search[^q]+q=opensearch/",{ fixture: "searchosresults" }).as("searchresultsopensearch")
-      console.log("Env is " + Cypress.env('environment'))
-      console.log("Barfoo is " + Cypress.env('barfoo'))
+    it("Searches for something that should match", () => {
       if('local' == Cypress.env('environment')) {
         cy.intercept({
           pathname: '/indexes/platform_docs/search',
@@ -32,7 +28,6 @@ describe("Home",()=>{
       }
 
       cy.get("#xssroot").find("h2").as("searchresultsheader")
-      cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
       cy.get("@searchresultsheader").contains("Documentation")
       cy.get("#xssroot").find("li").contains("OpenSearch").should("exist")
@@ -48,6 +43,26 @@ describe("Home",()=>{
       cy.get("@searchpageresults").contains("Documentation")
 
       cy.get("#xssSearchPage").find("li").contains("OpenSearch").should("exist")
+
+    })
+
+    it("Searches for something that should not match", ()=>{
+      cy.get("#searchwicon-header").type("vertical scaling")
+      cy.get("#xssroot").find("h2").as("searchresultsheader")
+      cy.get("@searchresultsheader").should("exist")
+      cy.get("@searchresultsheader").contains("No results")
+      cy.get("#xssroot").find("p").contains("No documentation matched")
+
+      cy.get("#searchwicon-header").type("{enter}")
+      cy.location("pathname").should(
+          "eq",
+          "/search.html"
+      )
+
+      cy.get("#xssSearchPage").find("h2").as("searchpageresults")
+      cy.get("@searchpageresults").should("exist")
+      cy.get("@searchpageresults").contains("No results")
+
 
     })
   })
