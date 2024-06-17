@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cypress-io/github-action@v6
-        with:
-         project: ./sites/platform
+#        with:
+#         project: ./sites/platform
         env:
           CYPRESS_baseUrl: ${{ inputs.url }}
           CYPRESS_environment: github
