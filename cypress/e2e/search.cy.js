@@ -62,41 +62,40 @@ describe("Home",()=>{
       cy.get("#xssSearchPage").find("h2").as("searchpageresults")
       cy.get("@searchpageresults").should("exist")
       cy.get("@searchpageresults").contains("No results")
+    })
 
-      it("Searches for something that should ONLY match on platformsh", () => {
-        if('local' == Cypress.env('environment')) {
-          cy.intercept({
-            pathname: '/indexes/platform_docs/search',
-            query: {
-              q: 'opensearch'
-            }
-          },{ fixture: "searchosresults" }).as("searchresultsopensearch")
-        }
+    it("Searches for something that should ONLY match on platformsh", () => {
+      if('local' == Cypress.env('environment')) {
+        cy.intercept({
+          pathname: '/indexes/platform_docs/search',
+          query: {
+            q: 'opensearch'
+          }
+        },{ fixture: "searchosresults" }).as("searchresultsopensearch")
+      }
 
-        cy.get("#searchwicon-header").type("24.55 gb")
+      cy.get("#searchwicon-header").type("24.55 gb")
 
-        if ('local' == Cypress.env('environment')) {
-          cy.wait('@searchresultsopensearch')
-        }
+      if ('local' == Cypress.env('environment')) {
+        cy.wait('@searchresultsopensearch')
+      }
 
-        cy.get("#xssroot").find("h2").as("searchresultsheader")
-        cy.get("@searchresultsheader").should("exist")
-        cy.get("@searchresultsheader").contains("Dedicated Gen 3")
-        cy.get("#xssroot").find("li").contains("24.55").should("exist")
+      cy.get("#xssroot").find("h2").as("searchresultsheader")
+      cy.get("@searchresultsheader").should("exist")
+      cy.get("@searchresultsheader").contains("Dedicated Gen 3")
+      cy.get("#xssroot").find("li").contains("24.55").should("exist")
 
-        cy.get("#searchwicon-header").type("{enter}")
-        cy.location("pathname").should(
-            "eq",
-            "/search.html"
-        )
+      cy.get("#searchwicon-header").type("{enter}")
+      cy.location("pathname").should(
+          "eq",
+          "/search.html"
+      )
 
-        cy.get("#xssSearchPage").find("h2").as("searchpageresults")
-        cy.get("@searchpageresults").should("exist")
-        cy.get("@searchpageresults").contains("Documentation")
+      cy.get("#xssSearchPage").find("h2").as("searchpageresults")
+      cy.get("@searchpageresults").should("exist")
+      cy.get("@searchpageresults").contains("Documentation")
 
-        cy.get("#xssSearchPage").find("li").contains("24.55").should("exist")
-
-      })
+      cy.get("#xssSearchPage").find("li").contains("24.55").should("exist")
 
     })
   })
