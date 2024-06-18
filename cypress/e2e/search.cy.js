@@ -7,12 +7,12 @@ describe("Home",()=>{
       cy.intercept("/indexes/platform_docs/search*", { "hits":[] })
     }
 
-    cy.visit("/")
+    //cy.visit("/")
   })
-
 
   context("Search tests",()=>{
     it("Searches for something that should match in both", () => {
+      cy.visit("/")
       if('local' == Cypress.env('environment')) {
         cy.intercept({
           pathname: '/indexes/platform_docs/search',
@@ -22,7 +22,7 @@ describe("Home",()=>{
         },{ fixture: "searchosresults" }).as("searchresultsopensearch")
       }
 
-      cy.get("#searchwicon-header").scrollIntoView().type("opensearch")
+      cy.get("#searchwicon-header").type("opensearch")
 
       if ('local' == Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
@@ -48,7 +48,8 @@ describe("Home",()=>{
     })
 
     it("Searches for something that should not match on platformsh", ()=>{
-      cy.get("#searchwicon-header").scrollIntoView().type("vertical scaling")
+      cy.visit("/")
+      cy.get("#searchwicon-header").type("vertical scaling")
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
       cy.get("@searchresultsheader").contains("No results")
@@ -66,6 +67,7 @@ describe("Home",()=>{
     })
 
     it("Searches for something that should ONLY match on platformsh", () => {
+      cy.visit("/")
       if('local' == Cypress.env('environment')) {
         cy.intercept({
           pathname: '/indexes/platform_docs/search',
@@ -76,7 +78,7 @@ describe("Home",()=>{
       }
 
       // no idea why but type will NOT work consistently unless we add a scrollIntoView before we try to type
-      cy.get("#searchwicon-header").scrollIntoView().type("24.55 gb")
+      cy.get("#searchwicon-header").type("24.55 gb")
 
       if ('local' == Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
@@ -101,5 +103,4 @@ describe("Home",()=>{
 
     })
   })
-
 })
