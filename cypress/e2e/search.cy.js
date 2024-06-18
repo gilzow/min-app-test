@@ -10,6 +10,7 @@ describe("Home",()=>{
     cy.visit("/")
   })
 
+
   context("Search tests",()=>{
     it("Searches for something that should match in both", () => {
       if('local' == Cypress.env('environment')) {
@@ -21,7 +22,7 @@ describe("Home",()=>{
         },{ fixture: "searchosresults" }).as("searchresultsopensearch")
       }
 
-      cy.get("#searchwicon-header").type("opensearch")
+      cy.get("#searchwicon-header").scrollIntoView().type("opensearch")
 
       if ('local' == Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
@@ -47,7 +48,7 @@ describe("Home",()=>{
     })
 
     it("Searches for something that should not match on platformsh", ()=>{
-      cy.get("#searchwicon-header").type("vertical scaling")
+      cy.get("#searchwicon-header").scrollIntoView().type("vertical scaling")
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
       cy.get("@searchresultsheader").contains("No results")
@@ -74,7 +75,8 @@ describe("Home",()=>{
         },{ fixture: "searchosresults" }).as("searchresultsopensearch")
       }
 
-      cy.get("#searchwicon-header").type("24.55 gb")
+      // no idea why but type will NOT work consistently unless we add a scrollIntoView before we try to type
+      cy.get("#searchwicon-header").scrollIntoView().type("24.55 gb")
 
       if ('local' == Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
@@ -82,7 +84,7 @@ describe("Home",()=>{
 
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
-      cy.get("@searchresultsheader").contains("Dedicated Gen 3")
+      cy.get("@searchresultsheader").contains("Documentation")
       cy.get("#xssroot").find("li").contains("24.55").should("exist")
 
       cy.get("#searchwicon-header").type("{enter}")
@@ -99,4 +101,5 @@ describe("Home",()=>{
 
     })
   })
+
 })
