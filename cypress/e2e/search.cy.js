@@ -47,13 +47,24 @@ describe("Home",()=>{
 
     })
 
-    it("Searches for something that should not match on platformsh", ()=>{
+    it("Searches for something that should not match on Platformsh, but should on Upsun", ()=>{
+      const searchDetails = {
+        search: 'vertical scaling',
+        header: 'No results',
+        body: 'No documentation matched'
+      }
+
+      if ('upsun' == Cypress.env('site')) {
+        searchDetails.header = 'Documentation'
+        searchDetails.body = searchDetails.search
+      }
+
       cy.visit("/")
-      cy.get("#searchwicon-header").type("vertical scaling")
+      cy.get("#searchwicon-header").type(searchDetails.search)
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
-      cy.get("@searchresultsheader").contains("No results")
-      cy.get("#xssroot").find("p").contains("No documentation matched")
+      cy.get("@searchresultsheader").contains(searchDetails.header)
+      cy.get("#xssroot").find("p").contains(searchDetails.body)
 
       cy.get("#searchwicon-header").type("{enter}")
       cy.location("pathname").should(
@@ -63,10 +74,26 @@ describe("Home",()=>{
 
       cy.get("#xssSearchPage").find("h2").as("searchpageresults")
       cy.get("@searchpageresults").should("exist")
-      cy.get("@searchpageresults").contains("No results")
+      if ('upsun' == Cypress.env('site')) {
+        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
+      } else {
+        cy.get("@searchpageresults").contains(searchDetails.header)
+      }
+
     })
 
-    it("Searches for something that should ONLY match on platformsh", () => {
+    it("Searches for something that should ONLY match on platformsh, but not on Upsun", () => {
+      const searchDetails = {
+        search: '24.55',
+        header: 'No results',
+        body: 'No documentation matched'
+      }
+
+      if ('platformsh' == Cypress.env('site')) {
+        searchDetails.header = 'Documentation'
+        searchDetails.body = searchDetails.search
+      }
+
       cy.visit("/")
       if('local' == Cypress.env('environment')) {
         cy.intercept({
@@ -80,8 +107,8 @@ describe("Home",()=>{
       console.log('Pausing before starting')
       cy.wait(1000)
       console.log('finished pausing')
-      // no idea why but type will NOT work consistently unless we add a scrollIntoView before we try to type
-      cy.get("#searchwicon-header").type("24.55 gb")
+
+      cy.get("#searchwicon-header").type(searchDetails.search)
 
       if ('local' == Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
@@ -89,8 +116,13 @@ describe("Home",()=>{
 
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
-      cy.get("@searchresultsheader").contains("Documentation")
-      cy.get("#xssroot").find("li").contains("24.55").should("exist")
+      cy.get("@searchresultsheader").contains(searchDetails.header)
+      if ('platformsh' == Cypress.env('site')) {
+        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
+      } else {
+        cy.get("@searchpageresults").contains(searchDetails.body)
+      }
+
 
       cy.get("#searchwicon-header").type("{enter}")
       cy.location("pathname").should(
@@ -100,9 +132,13 @@ describe("Home",()=>{
 
       cy.get("#xssSearchPage").find("h2").as("searchpageresults")
       cy.get("@searchpageresults").should("exist")
-      cy.get("@searchpageresults").contains("Documentation")
+      cy.get("@searchpageresults").contains(searchDetails.header)
 
-      cy.get("#xssSearchPage").find("li").contains("24.55").should("exist")
+      if ('platformsh' == Cypress.env('site')) {
+        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
+      } else {
+        cy.get("@searchpageresults").contains(searchDetails.body)
+      }
 
     })
   })
