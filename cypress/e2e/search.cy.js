@@ -22,6 +22,8 @@ describe("Home",()=>{
         },{ fixture: "searchosresults" }).as("searchresultsopensearch")
       }
 
+      cy.wait(1000)
+
       cy.get("#searchwicon-header").type("opensearch")
 
       if ('local' == Cypress.env('environment')) {
@@ -60,6 +62,7 @@ describe("Home",()=>{
       }
 
       cy.visit("/")
+      cy.wait(1000)
       cy.get("#searchwicon-header").type(searchDetails.search)
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
