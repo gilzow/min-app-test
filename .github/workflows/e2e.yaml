@@ -2,23 +2,34 @@ name: runs E2E tests
 on:
   workflow_dispatch:
     inputs:
-      url:
-        description: URL to test against
+      pshurl:
+        description: psh URL to test against
         type: string
         required: true
-
+      upsunurl:
+        description: upsun URL to test against
+        type: string
+        required: true
 
 jobs:
   run_test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - site: platformsh
+            url: ${{ inputs.pshurl }}
+          - site: upsun
+            url: ${{ inputs.upsunurl }}
     steps:
       - uses: actions/checkout@v4
       - uses: cypress-io/github-action@v6
         with:
-         wait-on: ${{ inputs.url }}
+         wait-on: ${{ matrix.url }}
          record: true
         env:
-          CYPRESS_baseUrl: ${{ inputs.url }}
+          CYPRESS_baseUrl: ${{ matrix.site }}
           CYPRESS_environment: github
+          CYPRESS_site: ${{ matrix.url }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
