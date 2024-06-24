@@ -135,7 +135,7 @@ describe("Home",()=>{
       cy.get("@searchpageresults").contains(searchDetails.header)
 
       if ('platformsh' == Cypress.env('site')) {
-        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
+        cy.get("@searchpageresults").find("li").contains(searchDetails.body).should("exist")
       } else {
         cy.get("@searchpageresults").contains(searchDetails.body)
       }
