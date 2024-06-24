@@ -1,0 +1,25 @@
+name: Get URLs
+on:
+  workflow_dispatch:
+    inputs:
+      mainurl:
+        description: psh URL to test against
+        type: string
+        required: true
+
+jobs:
+  set-urls:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Make artifact files
+        run: |
+          touch environment_url.txt
+      - name: Report environment URL
+        run: |
+          echo ${{ inputs.mainurl }} > environment_url.txt
+      - uses: actions/upload-artifact@v2
+        with:
+          name: pr-info
+          path: |
+            environment_url.txt
+          retention-days: 1
