@@ -28,8 +28,8 @@ jobs:
          wait-on: ${{ matrix.url }}
          record: true
         env:
-          CYPRESS_baseUrl: ${{ matrix.site }}
+          CYPRESS_baseUrl: ${{ matrix.url }}
           CYPRESS_environment: github
-          CYPRESS_site: ${{ matrix.url }}
+          CYPRESS_site: ${{ matrix.site }}
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
