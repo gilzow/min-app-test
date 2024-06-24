@@ -75,9 +75,9 @@ describe("Home",()=>{
       cy.get("#xssSearchPage").find("h2").as("searchpageresults")
       cy.get("@searchpageresults").should("exist")
       if ('upsun' == Cypress.env('site')) {
-        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
+        cy.get("#xssSearchPage").find("li").contains(searchDetails.body).should("exist")
       } else {
-        cy.get("@searchpageresults").contains(searchDetails.header)
+        cy.get("#xssSearchPage").contains(searchDetails.header)
       }
 
     })
@@ -88,6 +88,8 @@ describe("Home",()=>{
         header: 'No results',
         body: 'No documentation matched'
       }
+
+      console.log('Current site is ' + Cypress.env('site'))
 
       if ('platformsh' == Cypress.env('site')) {
         searchDetails.header = 'Documentation'
@@ -117,12 +119,7 @@ describe("Home",()=>{
       cy.get("#xssroot").find("h2").as("searchresultsheader")
       cy.get("@searchresultsheader").should("exist")
       cy.get("@searchresultsheader").contains(searchDetails.header)
-      if ('platformsh' == Cypress.env('site')) {
-        cy.get("#xssroot").find("li").contains(searchDetails.body).should("exist")
-      } else {
-        cy.get("@searchpageresults").contains(searchDetails.body)
-      }
-
+      cy.get('#xssroot').find('p').contains(searchDetails.body)
 
       cy.get("#searchwicon-header").type("{enter}")
       cy.location("pathname").should(
@@ -135,9 +132,9 @@ describe("Home",()=>{
       cy.get("@searchpageresults").contains(searchDetails.header)
 
       if ('platformsh' == Cypress.env('site')) {
-        cy.get("@searchpageresults").find("li").contains(searchDetails.body).should("exist")
+        cy.get("#xssSearchPage").find("li").contains(searchDetails.body).should("exist")
       } else {
-        cy.get("@searchpageresults").contains(searchDetails.body)
+        cy.get("#xssSearchPage").contains(searchDetails.body)
       }
 
     })
