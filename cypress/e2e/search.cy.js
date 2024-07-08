@@ -3,7 +3,7 @@
 //Only platform should return a match for "24.55 gb"
 describe("Home",()=>{
   beforeEach(()=>{
-    if('local' == Cypress.env('environment')) {
+    if('local' === Cypress.env('environment')) {
       cy.intercept("/indexes/platform_docs/search*", { "hits":[] })
     }
 
@@ -13,7 +13,7 @@ describe("Home",()=>{
   context("Search tests",()=>{
     it("Searches for something that should match in both", () => {
       cy.visit("/")
-      if('local' == Cypress.env('environment')) {
+      if('local' === Cypress.env('environment')) {
         cy.intercept({
           pathname: '/indexes/platform_docs/search',
           query: {
@@ -26,7 +26,7 @@ describe("Home",()=>{
 
       cy.get("#searchwicon-header").type("opensearch")
 
-      if ('local' == Cypress.env('environment')) {
+      if ('local' === Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
       }
 
@@ -56,7 +56,7 @@ describe("Home",()=>{
         body: 'No documentation matched'
       }
 
-      if ('upsun' == Cypress.env('site')) {
+      if ('upsun' === Cypress.env('site')) {
         searchDetails.header = 'Documentation'
         searchDetails.body = searchDetails.search
       }
@@ -77,7 +77,7 @@ describe("Home",()=>{
 
       cy.get("#xssSearchPage").find("h2").as("searchpageresults")
       cy.get("@searchpageresults").should("exist")
-      if ('upsun' == Cypress.env('site')) {
+      if ('upsun' === Cypress.env('site')) {
         cy.get("#xssSearchPage").find("li").contains(searchDetails.body).should("exist")
       } else {
         cy.get("#xssSearchPage").contains(searchDetails.header)
@@ -94,13 +94,13 @@ describe("Home",()=>{
 
       console.log('Current site is ' + Cypress.env('site'))
 
-      if ('platformsh' == Cypress.env('site')) {
+      if ('platformsh' === Cypress.env('site')) {
         searchDetails.header = 'Documentation'
         searchDetails.body = searchDetails.search
       }
 
       cy.visit("/")
-      if('local' == Cypress.env('environment')) {
+      if('local' === Cypress.env('environment')) {
         cy.intercept({
           pathname: '/indexes/platform_docs/search',
           query: {
@@ -109,13 +109,13 @@ describe("Home",()=>{
         },{ fixture: "searchosresults" }).as("searchresultsopensearch")
       }
 
-      console.log('Pausing before starting')
-      cy.wait(1000)
-      console.log('finished pausing')
+      // console.log('Pausing before starting')
+      // cy.wait(1000)
+      // console.log('finished pausing')
 
-      cy.get("#searchwicon-header").type(searchDetails.search)
+      cy.get("#searchwicon-header").clear().type(searchDetails.search)
 
-      if ('local' == Cypress.env('environment')) {
+      if ('local' === Cypress.env('environment')) {
         cy.wait('@searchresultsopensearch')
       }
 
@@ -134,7 +134,7 @@ describe("Home",()=>{
       cy.get("@searchpageresults").should("exist")
       cy.get("@searchpageresults").contains(searchDetails.header)
 
-      if ('platformsh' == Cypress.env('site')) {
+      if ('platformsh' === Cypress.env('site')) {
         cy.get("#xssSearchPage").find("li").contains(searchDetails.body).should("exist")
       } else {
         cy.get("#xssSearchPage").contains(searchDetails.body)
