@@ -6,8 +6,8 @@ jobs:
     steps:
       - run: |
           if [[ '' != "${{ vars.SOME_VAR }}" ]]; then
-            echo "::notice::SOME_VAR is not set"
+            echo "::notice::SOME_VAR is set"
           else
-            echo "::error::SOME_VAR is set"
+            echo "::error::SOME_VAR is NOT set"
           fi
           
