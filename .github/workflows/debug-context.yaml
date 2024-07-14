@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          if[[ '' != ${{ vars.SOME_VAR }} ]]; then
+          if [[ '' != ${{ vars.SOME_VAR }} ]]; then
             echo "::notice::SOME_VAR is not set"
           else
             echo "::error::SOME_VAR is set"
