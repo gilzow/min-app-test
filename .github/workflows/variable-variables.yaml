@@ -5,6 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: value of our variable
+        run: |
+          echo "Current contents of our variable in question: ${{ vars.IAMAVAR }}"
+
       - if: ${{ vars.IAMAVAR }} != ''
         name: Runs if our variable is set
         uses: ./.github/actions/test-action
