@@ -9,13 +9,13 @@ jobs:
         run: |
           echo "Current contents of our variable in question: ${{ vars.IAMAVAR }}"
 
-      - if: '${{ vars.IAMAVAR }}' != ''
+      - if: ${{ vars.IAMAVAR != '' }}
         name: Runs if our variable is set
         uses: ./.github/actions/test-action
         with:
           ibrequired: a required value
           iamoptional: ${{ vars.IAMAVAR }}
-      - if: '${{ vars.IAMAVAR }}' == ''
+      - if: ${{ vars.IAMAVAR == '' }}
         name: Runs if our variable is NOT set
         uses: ./.github/actions/test-action
         with:
