@@ -1,0 +1,16 @@
+on: workflow_dispatch
+
+jobs:
+  testaction:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - if: ${{ vars.IAMAVAR }} != ''
+        uses: ./.github/actions/test-action
+        with:
+          ibrequired: a required value
+          iamoptional: ${{ vars.IAMAVAR }}
+      - if: ${{ vars.IAMAVAR }} == ''
+        uses: ./.github/actions/test-action
+        with:
+          ibrequired: a required value

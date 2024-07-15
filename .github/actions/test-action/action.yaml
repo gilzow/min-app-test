@@ -1,0 +1,24 @@
+name: Testing options for passing repo variables
+description: actions need variables, but not always
+
+inputs:
+  ibrequired:
+    description: generic input that should always be included
+    required: true
+
+  iamoptional:
+    description: sometimes I'm needed, sometimes now
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: |
+        echo "for ibrequired you gave me ${{ inputs.ibrequired }}"
+        
+        if [[ "" != "${{ inputs.iamoptional }}" ]]; then
+          echo "you also gave me ${{ inputs.iamoptional }}."
+        fi
+        
